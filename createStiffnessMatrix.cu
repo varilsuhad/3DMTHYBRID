@@ -19,9 +19,9 @@
 // 4. The labeling matrix for the finite-element method. Similarly to the previous input, this one indicates the cell that will be subject to the finite-element numerical method. The input should be in int32 format.
 // 5. The number of blocks in the x-direction (nx) stored on the host side in int32 format.
 // 6. The number of blocks in y-direction (ny) stored on the host side in int32 format.
-// 6. The number of blocks in z-direction (nz) stored on the host side in int32 format.
-// 7. The frequency value is stored on the host and provided in int32 format.
-// 8. The unique conductivity vector is stored in real double format. It doesn't include the air conductivities or the repeating conductivity values in the padding regions.
+// 7. The number of blocks in z-direction (nz) stored on the host side in int32 format.
+// 8. The frequency value is stored on the host and provided in int32 format.
+// 9. The unique conductivity vector is stored in real double format. It doesn't include the air conductivities or the repeating conductivity values in the padding regions.
 
 // The outputs are all on the GPU side and it is ordered in this fashion.
 // 1. The vector containing the values of the sparse matrix A stored in double-complex format.
