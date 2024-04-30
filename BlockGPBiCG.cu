@@ -1,5 +1,7 @@
-//Created by Deniz Varilsuha
-//email: deniz.varilsuha@itu.edu.tr
+//Author: Deniz Varilsuha
+//Email: deniz.varilsuha@itu.edu.tr
+//Compilation date: 29/02/2024
+//Compiled using Cuda version 12.3 and Matlab R2023b
 
 // To compile the code use the following line in Matlab's command line (change the paths if necessary)
 // mexcuda -R2018a BlockGPBiCG.cu -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\lib\x64" NVCCFLAGS='"-Wno-deprecated-gpu-targets --gpu-architecture=compute_61  --gpu-code=sm_61,sm_86,sm_89 -use_fast_math -extra-device-vectorization"' -lcusparse -lcublas
