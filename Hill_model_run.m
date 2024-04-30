@@ -67,7 +67,7 @@ end
 fprintf('Total time for iterative solution=%f s\n Total iteration count=%d\n',tots,tot);  %21.48 865   
 
 
-[Aval,Acol,Arow,Mval,Mcol,Mrow,bg]=Merge_all_singlefCF(NKg,(ELg),(FDg),(FEg),int32(nx),int32(ny),int32(nz),double(f(i)),mg); 
+[Aval,Acol,Arow,Mval,Mcol,Mrow,bg]=createStiffnessMatrix(NKg,(ELg),(FDg),(FEg),int32(nx),int32(ny),int32(nz),double(f(i)),mg); 
 Memoryreq=whos('Arow').bytes+whos('Acol').bytes+whos('Aval').bytes+whos('Mrow').bytes+whos('Mcol').bytes+whos('Mval').bytes;
 fprintf('Memory consumption for A and M matrices=%f MB\n',Memoryreq/1024/1024);
 
