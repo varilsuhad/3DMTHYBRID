@@ -1,10 +1,29 @@
-//Author: Deniz Varilsuha
-//Email: deniz.varilsuha@itu.edu.tr
-//Compilation date: 29/02/2024
-//Compiled using Cuda version 12.3 and Matlab R2023b
+// Author: Deniz Varilsuha
+// Email: deniz.varilsuha@itu.edu.tr
+// Compilation date: 29/02/2024
+// Compiled using Cuda version 12.3 and Matlab R2023b
 
 // To compile the code use the following line in Matlab's command line (change the paths if necessary)
 // mexcuda -R2018a BlockGPBiCG.cu -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\lib\x64" NVCCFLAGS='"-Wno-deprecated-gpu-targets --gpu-architecture=compute_61  --gpu-code=sm_61,sm_86,sm_89 -use_fast_math -extra-device-vectorization"' -lcusparse -lcublas
+
+// This routine solves the Ax=b for the forward modeling of the 3D MT problem for both polarizations. The inputs should be on the GPU memory (unless otherwise stated explicitly) in this order:
+// 1. Row indices of matrix A stored in CSR (compressed sparse row) format. The vector should be in int32 (4-byte integer) data format.
+// 2. Column indices of matrix A stored in a vector. The data format should be int32.
+// 3. The values of the sparse matrix A. The input should be in a double-complex format.
+// 4. The right-hand side vector b is stored in a double-complex format. The input contains the values for both polarizations. So if the matrix A has a size of NxN then the vector b should have a size of 2N.
+// 5. Row indices of the preconditioner matrix M stored in CSR format. The vector should be in int32 format.
+// 6. Column indices of the matrix M that stored in int32 format.
+// 7. The values of matrix M are stored in double-complex format.
+// 8. The relative residual norm to end the iterative solution. It is defined such as norm(Ax-b)/norm(b). The input should be on the host side (not on the GPU memory) and should be in real double precision format (8-byte real floating point)
+// 9. Maximum allowed number of iterations for the solution of Ax=b. The input should be on the host side and it should be in real double-precision format.
+// 10. The stagnation detection number is used to determine if the iterative process stagnated and cannot reduce the error level in the specified amount of steps. The input should be in real double-precision format.
+// 11. The initial x values are stored in a vector for the solution of Ax=b. The input should be in a complex double-precision format and it has a size of 2N.
+
+// The outputs are in this order: 
+// 1. The x values after solving the Ax=b. The values are in double complex format and stored in the GPU memory
+// 2. The relative residual norm of Ax=b (norm(Ax-b)/norm(b)) is calculated at each iteration. This vector is stored on the host side as a real double precision.
+// 3. The final relative residual norm after the solution of Ax=b. The value is a real double precision value and is stored on the host side.
+
 
 #include <stdio.h>
 #include <stdlib.h>
