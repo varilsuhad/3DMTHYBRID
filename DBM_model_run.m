@@ -1,3 +1,7 @@
+% Author: Deniz Varilsuha
+% Date of creation: 29/02/2024
+% 
+
 clear all;clc;close all;
 
 
@@ -67,7 +71,7 @@ clear Arow Acol Aval Mrow Mcol Mval xinit bg
 
 end 
 
-fprintf('Total time for iterative solution=%f s\n Total iteration count=%d\n',tots,tot);  %21.48 865   
+fprintf('Total time for iterative solution=%f s\n Total iteration count=%d\n',tots,tot);  
 
 
 [Aval,Acol,Arow,Mval,Mcol,Mrow,bg]=createStiffnessMatrix(NKg,(ELg),(FDg),(FEg),int32(nx),int32(ny),int32(nz),double(f(i)),mg); 
