@@ -1,3 +1,19 @@
+% Author: Deniz Varilsuha
+% Email: deniz.varilsuha@itu.edu.tr
+% Date of creation: 29/02/2024
+
+% This routine is created for the Hill model. It loads in a file (Hillmodel.mat) which holds the node locations (NK)
+% element information matrix (EL), conductivity value vector (m), and the 3D matrices (FE) and (FD) which labels the cells as 
+% finite-element and finite-difference cells. During the assembly of the matrix A to solve Ax=b, the respective cells are discretized 
+% using the FE and FD according to these 3D matrices. 
+
+% There are 2 possible options to run this script. The first switch (sw==1) labels all the cells as FE cells and performs the coefficient matrix
+% assembly and the solution of the resulting linear systems. The second switch (sw==2) is for the hybrid option. The Hill model has a large topography 
+% and in order to create it some parts of the mesh are distorted. For that reason, the distorted parts are labeled to be included in the FE region
+% and the rest of the mesh is in the FD region. Since the hill model has distorted elements, it is only possible to run this script with the FE
+% and hybrid options.
+
+
 clear all;clc;close all;
 
 
@@ -5,7 +21,7 @@ clear all;clc;close all;
 % sw=1; % pure FE
 sw=2; % hybrid
 
-
+%
 load('Hillmodel.mat');
 
 d=gpuDevice(1);
@@ -13,10 +29,10 @@ d.CachePolicy='minimum';
 
 
 % Switch for the 2 cases
-if( sw==1) % pure FE
+if( sw==1) % pure FE option
     FD=FD1;
     FE=FE1;    
-elseif(sw==2) % hybrid
+elseif(sw==2) % hybrid opt,on
     FD=FD2;
     FE=FE2;
 end
