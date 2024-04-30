@@ -18,8 +18,8 @@
 clear all;clc;close all;
 
 % Comment and uncomment accordingly
-% sw=1; % pure FE
-sw=2; % hybrid
+% sw=1; % pure FE option
+sw=2; % hybrid option
 
 % Loads in the node/element information and pre-determined FE/FD matrices. 
 load('TwoMountainmodel.mat');
