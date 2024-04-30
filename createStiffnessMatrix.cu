@@ -1,8 +1,37 @@
-//Created by Deniz Varilsuha
-//email: deniz.varilsuha@itu.edu.tr
+// Author: Deniz Varilsuha
+// Email: deniz.varilsuha@itu.edu.tr
+// Compilation date: 29/02/2024
+// Compiled using Cuda version 12.3 and Matlab R2023b
 
 // To compile the code use the following line in Matlab's command line (change the paths if necessary)
 // mexcuda -R2018a createStiffnessMatrix.cu -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64" NVCCFLAGS='"-Wno-deprecated-gpu-targets -arch=sm_86"' -lcusparse -lcublas
+
+
+// The purpose of this routine is to form the matrix A and vector b to be able to solve Ax=b later on. It also forms the preconditioner matrix M.  
+// The inputs should be on the GPU memory unless otherwise stated. They are in the following order:
+// 1. The node information is stored in a 4D array in a double real precision (8-byte) format. The first dimension of this 4D array represents the y-direction in a structured 3D mesh and it has a size of (ny+1) where ny is the number of blocks in the y-direction
+// The second dimension is for the x-direction and it has a size of (nx+1), similarly the third dimension is for the z-direction and it has a size of (nz+1). The 4th dimension has a size of three. The first value represents the x coordinates, 
+// The second value represents the y coordinate and finally, the third one is for the z coordinate in local coordinates. 
+// 2. The second input is a matrix that stores the element information which holds the node numbers for each element. This matrix should have 24 columns and the first 20 of them show the node or edge number for the vector potentials A and scalar potentials Phi in the order shown in the paper.
+// The following 3 columns are for the elements x y and z index in a structured 3D hexahedral mesh. The last column holds the index for the conductivity value. The values -1 in this matrix represent air conductivities in the conductivity index. 
+// The other -1 values for edge or node indices are for labeling those edges and nodes that are on the mesh boundaries and they are not included in the coefficient matrix. This input should be in int32 (4-byte integer) format.
+// 3. The 3D labeling matrix labels cells as the finite-difference cells which are not distorted. It has a size of (ny*nx*nz) The values 1 tell that those cells are subject to the finite-difference method. The zeros mean the opposite. This input should be in int32 format.
+// 4. The labeling matrix for the finite-element method. Similarly to the previous input, this one indicates the cell that will be subject to the finite-element numerical method. The input should be in int32 format.
+// 5. The number of blocks in the x-direction (nx) stored on the host side in int32 format.
+// 6. The number of blocks in y-direction (ny) stored on the host side in int32 format.
+// 6. The number of blocks in z-direction (nz) stored on the host side in int32 format.
+// 7. The frequency value is stored on the host and provided in int32 format.
+// 8. The unique conductivity vector is stored in real double format. It doesn't include the air conductivities or the repeating conductivity values in the padding regions.
+
+// The outputs are all on the GPU side and it is ordered in this fashion.
+// 1. The vector containing the values of the sparse matrix A stored in double-complex format.
+// 2. The column indices vector for the matrix A represented in CSR (compressed sparse row) format and stored in int32 format.
+// 3. The row indices vector for the matrix A in CSR format and stored in int32 format.
+// 4. The vector for the sparse matrix M in double complex format.
+// 5. The vector for the column indices of the matrix M in int32 format.
+// 6. The vector for the row indices of the matrix M in int32 format.
+// 7. The right-hand-side (RHS) vector b is stored in double-precision format. If the matrix a has a size of (NxN), this vector has a size of (2N) because it represents the RHS' for both polarizations.  
+
 
 #include <stdio.h>
 #include <stdlib.h>
