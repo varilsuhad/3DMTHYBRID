@@ -6,7 +6,7 @@
 
 DBM_model_run.m , Hill_model_run.m and TwoMountain_model_run.m are the main files the user should interact with. They are for the assembly of the coefficient matrices and solving the resulting linear equation sets for all frequencies specified for the respective models, Double Brick Model (DBM), the Hill model and the Two-Mountain model. There are specified options/switches in these scripts that will perform the assembly and the solution using the pure finite-differences (FD), the pure-finite elements (FE) and finally the hybrid method using both FD and FE methods jointly. The Hill model and the Two-mountain model has large topographies and thus distorted elements in their respective mesh so that for these models, only the FE and hybrid options are available beacuse the FD approach for those models would require another mesh. These scripts will time the solution for the given frequency range and print out the total iteration number and memory consumption of the matrices in MB (MegaBytes).
 
-## .*mat files
+## *.mat files
 Abovementioned scripts will load in a *.mat file related to those models. The loaded variable can be described such as
 1. 'm' is vector holds the conductivities for the respective models. It doesn't contain the air conductivies or the repeated conductivity values in the padding regions of a 3D mesh
 2. 'f' is another vector for the frequency range that will be used for the assembly of the coefficient matrix for a given frequency.
@@ -14,9 +14,10 @@ Abovementioned scripts will load in a *.mat file related to those models. The lo
 4.  'EL' is a matrix which holds cell information. It has nx*ny*nz number of rows which is the number of cells/blocks in a given structured mesh. It also has 24 columns. The first 12 column are for the edge vector potentials and the 8 columns after that are for the scalar potentials defined on nodes. The values in these columns indicate the respective edge or node number in the global matrix. -1 in these entries indicate that the edge/node is located on the edge of the mesh and it will not be included into the global coefficient matrix. The 3 columns after the first 20 columns indicate the cells x-, y- and z- index in a structured 3D hexahedral mesh. The last column gives the conductivity value index which will give out the conductivity value when looked into vector 'm'.
 5.  The 'FD' and 'FE' are 3D matrices which have sizes of ny, nx and nz in their respective dimensions. These are for labeling the cells/blocks to be subjected to finite-difference method or finite-element method. The values in these matrices can be either 1 or 0. No cell/block could have 1 for both FD and FE simultaneously. At the same time, a single cell shouldn't have a 0 in both matrices. In short, FE and FD matrices are inverse of each other in logical sense. There are 2 to 3 different FD and FE matrices such as FD0-FE0 or FD1-FE1. These pairs are for different case scenarios where one might want to assemble and solve the linear equations with pure FD, pure FE or the hybrid approach. These options are specified in the main scripts mentioned above.
 
-## .*cu files
+## *.cu files
 .cu files are the cuda files which are for creating the global coefficient matrices and vectors (createStiffnessMatrix) and also for solving them (BlockGPBiCG). They are already compiled into .mexw64 files. However one may wish to recompile them using the command in those files. The input and output structure for these mex files are stated in the respective .cu files however it will be also stated here:
 
+### createStiffnessMatrix.cu
 **createStiffnessMatrix** is to form the matrix A and vector b to be able to solve Ax=b later on. It also forms the preconditioner matrix M.  
 
 *The inputs should be on the GPU memory unless otherwise stated. They are in the following order:*
