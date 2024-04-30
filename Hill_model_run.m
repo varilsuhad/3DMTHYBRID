@@ -17,11 +17,11 @@
 clear all;clc;close all;
 
 
-
+% Comment and uncomment accordingly
 % sw=1; % pure FE
 sw=2; % hybrid
 
-%
+% Loads in the node/element information and pre-determined FE/FD matrices. 
 load('Hillmodel.mat');
 
 d=gpuDevice(1);
@@ -32,7 +32,7 @@ d.CachePolicy='minimum';
 if( sw==1) % pure FE option
     FD=FD1;
     FE=FE1;    
-elseif(sw==2) % hybrid opt,on
+elseif(sw==2) % hybrid option
     FD=FD2;
     FE=FE2;
 end
