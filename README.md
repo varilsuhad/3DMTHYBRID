@@ -43,7 +43,7 @@ The other -1 values for edge or node indices are for labeling those edges and no
 5. The vector for the column indices of the matrix M in int32 format.
 6. The vector for the row indices of the matrix M in int32 format.
 7. The right-hand-side (RHS) vector b is stored in double-precision format. If the matrix a has a size of (NxN), this vector has a size of (2N) because it represents the RHS' for both polarizations.
-
+### BlockGPBiCG.cu
 **BlockGPBiCG** is the block version of GPBiCG algorithm that solves the Ax=b for the forward modeling of the 3D MT problem for both polarizations. The inputs should be on the GPU memory (unless otherwise stated explicitly) in this order:
 
 1. Row indices of matrix A stored in CSR (compressed sparse row) format. The vector should be in int32 (4-byte integer) data format.
