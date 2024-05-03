@@ -62,7 +62,7 @@ The other -1 values for edge or node indices are for labeling those edges and no
 
 *The outputs are in this order:* 
 1. The x values after solving the Ax=b. The values are in double complex format and stored in the GPU memory
-2. The relative residual norm of Ax=b (norm(Ax-b)/norm(b)) is calculated at each iteration. This vector is stored on the host side as a real double precision.
+2. The relative residual norm of Ax=b (norm(Ax-b)/norm(b)) is calculated at each iteration. This vector is stored on the host side as a real double precision value.
 3. The final relative residual norm after the solution of Ax=b. The value is a real double precision value and is stored on the host side.
 </div>
 
